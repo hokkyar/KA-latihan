@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use('/api', apiRoutes)
 app.use('/admin', adminRoutes)
 
-app.use((req, res, next) => res.status(404).send({ message: 'Route Not Found' }))
+app.use((req, res, next) => res.status(404).render('not-found'))
 app.use((err, req, res, next) => res.status(500).send({ message: 'Internal Server Error', error: err }))
 
 const PORT = process.env.PORT
