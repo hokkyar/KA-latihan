@@ -5,7 +5,7 @@ const nodemailer = require('nodemailer')
 
 exports.getAllUsers = async (req, res) => {
   const data = await user.findAll({
-    attributes: ['id', 'name'],
+    attributes: ['id', 'name', 'email'],
     limit: 10
   })
   res.json({
@@ -61,7 +61,7 @@ exports.registerUser = async (req, res) => {
       }
     })
 
-    const link = `http://localhost:3000/api/users/verify?id=${id}&token=${token}`
+    const link = `${process.env.HOST}/api/users/verify?id=${id}&token=${token}`
     const info = await transporter.sendMail({
       from: 'no-reply@koding-akademi',
       to: email,
