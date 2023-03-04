@@ -1,0 +1,29 @@
+<section class="section">
+  <div class="row">
+    <div class="col">
+      <div class="row">
+        <video id="webCam" width="640" height="480"></video>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+
+<script>
+  const scanner = new Instascan.Scanner({ video: document.getElementById('webCam') })
+
+  scanner.addListener('scan', (content) => {
+    window.location.href = '/admin/user-handler'
+    // window.location.href = '/admin/user-handler/IDUSERNYA'
+    alert('Id User: ' + content)
+  })
+
+  Instascan.Camera.getCameras().then((cameras) => {
+    if (cameras.length > 0) {
+      scanner.start(cameras[0])
+    } else {
+      alert('No cameras found.')
+    }
+  }).catch((e) => console.error(e))
+</script>

@@ -69,7 +69,7 @@ h6 {
   right: 15px;
   bottom: 15px;
   z-index: 99999;
-  background: #4154f1;
+  background: #474747;
   width: 40px;
   height: 40px;
   border-radius: 4px;
@@ -83,7 +83,7 @@ h6 {
 }
 
 .back-to-top:hover {
-  background: #6776f4;
+  background: #474747d2;
   color: #fff;
 }
 
@@ -379,7 +379,7 @@ h6 {
 }
 
 .logo span {
-  font-size: 26px;
+  font-size: 23px;
   font-weight: 700;
   color: #012970;
   font-family: "Nunito", sans-serif;

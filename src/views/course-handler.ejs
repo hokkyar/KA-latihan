@@ -1,0 +1,79 @@
+<section class="section">
+
+  <!-- Modal -->
+  <div class="modal fade" id="formModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Course</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form action="">
+          <div class="modal-body">
+            <div class="form-floating mb-3">
+              <input type="text" name="name" class="form-control" placeholder="John Doe" autocomplete="off">
+              <label>Judul Course</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input type="email" name="email" class="form-control" placeholder="contoh@example.com" autocomplete="off">
+              <label>Email</label>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-sm btn-success">Tambah</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- End Modal -->
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Kelola Data Course</h5>
+          <button type="button" class="btn btn-sm btn-success mb-3" data-bs-toggle="modal" data-bs-target="#formModal">
+            <i class="bi bi-plus-circle"></i>
+            Tambah Data
+          </button>
+          <table class="table datatable">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Judul</th>
+                <th scope="col">Terdaftar</th>
+                <th scope="col">Kategori</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">1</th>
+                <td>Data Analyst</td>
+                <td>10</td>
+                <td>Bootcamp</td>
+                <td>
+                  <a href=""><i class="bi bi-pencil text-warning"></i></a>
+                  <span>|</span>
+                  <a href=""><i class="bi bi-trash text-danger"></i></a>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">2</th>
+                <td>Roblox Intermediet</td>
+                <td>25</td>
+                <td>Coding</td>
+                <td>
+                  <a href=""><i class="bi bi-pencil text-warning"></i></a>
+                  <span>|</span>
+                  <a href=""><i class="bi bi-trash text-danger"></i></a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

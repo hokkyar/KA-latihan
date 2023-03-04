@@ -2,16 +2,14 @@ const express = require('express')
 const router = express.Router()
 const AdminController = require('../controllers/admin')
 
-// dashboard page
+
 router.get('/', AdminController.dashboard)
-
-// user handler page
 router.get('/user-handler', AdminController.userHandlerPage)
-
-// course handler page
 router.get('/course-handler', AdminController.courseHandlerPage)
-
-// event handler page
-// router.get('/event-handler', AdminController.eventHandlerPage)
+router.get('/event-handler', AdminController.eventHandlerPage)
+router.get('/qr-code', AdminController.qrHandlerPage)
+router.get('/profile', AdminController.profile)
+router.get('/faq', AdminController.faq)
+router.get('/contact', AdminController.contact)
 
 module.exports = router

@@ -1,0 +1,20 @@
+<div class="pagetitle">
+  <h1>
+    <%= title %>
+  </h1>
+  <nav>
+    <ol class="breadcrumb">
+      <% if (sub==='' || sub==='Kelola' || sub==='QR' ) { %>
+        <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+        <% }else{ %>
+          <li class="breadcrumb-item"><a href="/admin">Other</a></li>
+          <% } %>
+            <% if (sub==='Kelola' ) { %>
+              <li class="breadcrumb-item">Kelola</li>
+              <% } %>
+                <li class="breadcrumb-item active">
+                  <%= title %>
+                </li>
+    </ol>
+  </nav>
+</div>
