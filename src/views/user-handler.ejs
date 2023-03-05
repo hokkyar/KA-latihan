@@ -28,7 +28,7 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-sm btn-success">Tambah</button>
+            <button onclick="sendData()" type="button" class="btn btn-md btn-success">Simpan</button>
           </div>
         </form>
       </div>
@@ -85,3 +85,15 @@
     </div>
   </div>
 </section>
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+  function sendData() {
+    swal({
+      title: "Success!",
+      text: "Berhasil disimpan!",
+      icon: "success",
+      button: "OK",
+    });
+  }
+</script>

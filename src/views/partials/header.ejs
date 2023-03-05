@@ -20,10 +20,9 @@
 <body>
   <header id="header" class="header fixed-top d-flex align-items-center">
     <div class="d-flex align-items-center justify-content-between">
-      <a href="/admin" class="logo d-flex align-items-center">
+      <a href="/admin/dashboard" class="logo d-flex align-items-center">
         <span class="d-none d-lg-block">Koding Akademi</span> </a> <i class="bi bi-list toggle-sidebar-btn"></i>
     </div>
-
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">
         <li class="nav-item dropdown pe-3">
@@ -38,12 +37,16 @@
             <li>
               <hr class="dropdown-divider">
             </li>
-            <li> <a class="dropdown-item d-flex align-items-center" href="#"> <i class="bi bi-gear"></i>
-                <span>Pengaturan</span> </a></li>
+            <li> <a class="dropdown-item d-flex align-items-center" href="/admin/profile"> <i class="bi bi-gear"></i>
+                <span>Profile</span> </a></li>
             <li>
               <hr class="dropdown-divider">
-            <li> <a class="dropdown-item d-flex align-items-center" href="#"> <i class="bi bi-box-arrow-right"></i>
-                <span>Sign Out</span> </a></li>
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="/admin/logout">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Sign Out</span>
+              </a>
+            </li>
           </ul>
         </li>
       </ul>

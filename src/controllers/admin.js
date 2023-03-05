@@ -1,4 +1,33 @@
-// dashboard
+// login page
+exports.loginPages = (req, res) => {
+  if (req.session.user) {
+    res.redirect('/admin/dashboard')
+  } else {
+    res.render('login')
+  }
+}
+
+// login handler
+exports.loginHandler = (req, res) => {
+  if (req.body.username === 'hokky' && req.body.password === 'admin123') {
+    req.session.user = {
+      username: req.body.username
+    }
+    res.redirect('/admin/dashboard')
+  } else {
+    res.redirect('/admin/login')
+  }
+}
+
+// logout handler
+exports.logoutHandler = (req, res) => {
+  req.session.destroy((err) => {
+    if (err) return res.sendStatus(204)
+    res.redirect('/admin/login')
+  })
+}
+
+// dashboard page
 exports.dashboard = (req, res) => {
   res.render('index', { page: 'dashboard', title: 'Dashboard', sub: '' })
 }

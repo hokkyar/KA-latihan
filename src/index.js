@@ -3,6 +3,7 @@ const cors = require('cors')
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
+const session = require('express-session')
 
 const apiRoutes = require('./routes/index')
 const adminRoutes = require('./routes/admin')
@@ -14,6 +15,12 @@ app.use(express.static('public'))
 app.use(cors())
 app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(session({
+  secret: 'rahasia',
+  cookie: {
+    maxAge: 3600000 // 1 jam
+  }
+}))
 
 app.use('/api', apiRoutes)
 app.use('/admin', adminRoutes)
