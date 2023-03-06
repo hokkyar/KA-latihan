@@ -9,6 +9,7 @@ router.get('/logout', AdminController.logoutHandler)
 
 router.get('/dashboard', checkLogin, AdminController.dashboard)
 router.get('/user-handler', checkLogin, AdminController.userHandlerPage)
+router.get('/user-handler/show/:id', checkLogin, AdminController.showUserPage)
 router.get('/course-handler', checkLogin, AdminController.courseHandlerPage)
 router.get('/event-handler', checkLogin, AdminController.eventHandlerPage)
 router.get('/qr-code', checkLogin, AdminController.qrHandlerPage)

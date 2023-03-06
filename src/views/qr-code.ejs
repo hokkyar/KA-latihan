@@ -2,7 +2,8 @@
   <div class="row">
     <div class="col">
       <div class="row">
-        <video id="webCam" width="640" height="480"></video>
+        <!-- <video id="webCam" width="640" height="480"></video> -->
+        <video id="webCam" width="600" height="400"></video>
       </div>
     </div>
   </div>
@@ -14,9 +15,9 @@
   const scanner = new Instascan.Scanner({ video: document.getElementById('webCam') })
 
   scanner.addListener('scan', (content) => {
-    window.location.href = '/admin/user-handler'
-    // window.location.href = '/admin/user-handler/IDUSERNYA'
-    alert('Id User: ' + content)
+    // window.location.href = '/admin/user-handler/'
+    alert('ID_USER : ' + content)
+    window.location.href = '/admin/user-handler/show/iduser'
   })
 
   Instascan.Camera.getCameras().then((cameras) => {

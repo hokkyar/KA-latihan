@@ -1,0 +1,109 @@
+<section>
+  <input type="hidden" id="idUser" value="<%= detail.id %>">
+  <h1 id="userName"></h1>
+  <h1 id="userEmail"></h1>
+
+  <button id="deleteBtn" class="btn btn-danger">Delete</button>
+  <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#updateModal">Update</button>
+
+  <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Update User</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <form action="">
+          <div class="modal-body">
+            <div class="form-floating mb-3">
+              <input id="nameInput" type="text" class="form-control" placeholder="John Doe" autocomplete="off" required>
+              <label>Nama Lengkap</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input id="emailInput" type="email" class="form-control" placeholder="contoh@example.com"
+                autocomplete="off" required>
+              <label>Email</label>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button id="updateBtn" type="button" class="btn btn-md btn-success">Update</button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<script src="https://code.jquery.com/jquery-3.6.3.min.js"
+  integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<script>
+  const idUser = $('#idUser').val()
+  axios.get(`http://localhost:3000/api/users/${idUser}`).then(response => {
+    const { name, email } = response.data.data
+
+    $('#nameInput').val(name)
+    $('#emailInput').val(email)
+
+    $('#userName').html(name)
+    $('#userEmail').html(email)
+
+    $('#deleteBtn').on('click', () => {
+      swal({
+        title: "Apakah anda yakin?",
+        text: `${name} akan dihapus`,
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      })
+        .then((willDelete) => {
+          if (willDelete) {
+            axios.delete(`http://localhost:3000/api/users/${idUser}`)
+            swal({
+              title: "Sukses!",
+              text: "Berhasil dihapus!",
+              icon: "success",
+              button: "OK",
+            }).then((OKclicked) => {
+              if (OKclicked) {
+                window.location.href = '/admin/user-handler'
+              } else {
+                setInterval(() => {
+                  window.location.href = '/admin/user-handler'
+                }, 1000)
+              }
+            })
+          }
+        })
+    })
+
+    $('#updateBtn').on('click', () => {
+      $('#updateBtn').prop('disabled', true)
+      axios.put(`http://localhost:3000/api/users/${idUser}`, {
+        name: $('#nameInput').val(), email: $('#emailInput').val()
+      }).then((res) => {
+        swal({
+          title: "Sukses!",
+          text: "Berhasil diupdate!",
+          icon: "success",
+          button: "OK",
+        }).then((btnClicked) => {
+          if (btnClicked) {
+            window.location.reload()
+          } else {
+            setInterval(() => {
+              window.location.reload()
+            }, 1000)
+          }
+        })
+        $('#updateBtn').prop('disabled', false)
+      })
+    })
+  })
+
+</script>

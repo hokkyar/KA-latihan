@@ -17,6 +17,8 @@ app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(session({
   secret: 'rahasia',
+  resave: false,
+  saveUninitialized: false,
   cookie: {
     maxAge: 3600000 // 1 jam
   }

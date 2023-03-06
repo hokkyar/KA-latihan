@@ -9,7 +9,7 @@ exports.loginPages = (req, res) => {
 
 // login handler
 exports.loginHandler = (req, res) => {
-  if (req.body.username === 'hokky' && req.body.password === 'admin123') {
+  if (req.body.username === 'adminkeren' && req.body.password === 'admin123') {
     req.session.user = {
       username: req.body.username
     }
@@ -29,40 +29,45 @@ exports.logoutHandler = (req, res) => {
 
 // dashboard page
 exports.dashboard = (req, res) => {
-  res.render('index', { page: 'dashboard', title: 'Dashboard', sub: '' })
+  res.render('index', { page: 'dashboard', title: 'Dashboard', sub: '', detail: '' })
 }
 
 // user handler page
 exports.userHandlerPage = (req, res) => {
-  res.render('index', { page: 'user-handler', title: 'User', sub: 'Kelola' })
+  res.render('index', { page: 'user-handler', title: 'User', sub: 'Kelola', detail: '' })
+}
+
+// show user handler page
+exports.showUserPage = (req, res) => {
+  res.render('index', { page: 'show-user', title: 'User', sub: 'Kelola', detail: { id: req.params.id } })
 }
 
 // course handler page
 exports.courseHandlerPage = (req, res) => {
-  res.render('index', { page: 'course-handler', title: 'Course', sub: 'Kelola' })
+  res.render('index', { page: 'course-handler', title: 'Course', sub: 'Kelola', detail: '' })
 }
 
 // event handler page
 exports.eventHandlerPage = (req, res) => {
-  res.render('index', { page: 'event-handler', title: 'Event', sub: 'Kelola' })
+  res.render('index', { page: 'event-handler', title: 'Event', sub: 'Kelola', detail: '' })
 }
 
 // qr handler page
 exports.qrHandlerPage = (req, res) => {
-  res.render('index', { page: 'qr-code', title: 'Scan QR Code', sub: 'QR' })
+  res.render('index', { page: 'qr-code', title: 'Scan QR Code', sub: 'QR', detail: '' })
 }
 
 // profile page
 exports.profile = (req, res) => {
-  res.render('index', { page: 'profile', title: 'Profile', sub: 'Profile' })
+  res.render('index', { page: 'profile', title: 'Profile', sub: 'Profile', detail: '' })
 }
 
 // faq page
 exports.faq = (req, res) => {
-  res.render('index', { page: 'faq', title: 'FAQ', sub: 'FAQ' })
+  res.render('index', { page: 'faq', title: 'FAQ', sub: 'FAQ', detail: '' })
 }
 
 // contact page
 exports.contact = (req, res) => {
-  res.render('index', { page: 'contact', title: 'Contact', sub: 'Contact' })
+  res.render('index', { page: 'contact', title: 'Contact', sub: 'Contact', detail: '' })
 }

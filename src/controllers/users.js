@@ -2,10 +2,11 @@ const { user, emailToken } = require('../models/index')
 const { nanoid } = require('nanoid')
 const bcrypt = require('bcrypt')
 const nodemailer = require('nodemailer')
+const validator = require('validator')
 
 exports.getAllUsers = async (req, res) => {
   const data = await user.findAll({
-    attributes: ['id', 'name', 'email'],
+    attributes: ['id', 'name', 'email', 'verified'],
     limit: 10
   })
   res.json({
@@ -18,17 +19,11 @@ exports.registerUser = async (req, res) => {
   try {
     const { name, email, password, confirmPassword } = req.body
 
-    // cek apakah input user string
-    if (typeof (name) !== 'string' || typeof (email) !== 'string') {
-      res.status(400).json({ message: 'input yang dimasukkan bukan string' })
-      return
-    }
+    // cek apakah email valid
+    if (!validator.isEmail(email)) return res.status(400).json({ message: 'email tidak valid' })
 
     // cek apakah password dan confirmPassword sama
-    if (password !== confirmPassword) {
-      res.status(400).json({ message: 'password dan confirm password tidak sama' })
-      return
-    }
+    if (password !== confirmPassword) return res.status(400).json({ message: 'password dan confirm password tidak sama' })
 
     // cek apakah email sudah ada
     const data = await user.findOne({
@@ -38,8 +33,7 @@ exports.registerUser = async (req, res) => {
     })
 
     if (data) {
-      res.status(400).json({ message: 'email sudah terdaftar' })
-      return
+      return res.status(400).json({ message: 'email sudah terdaftar' })
     }
 
     // menambahkan user baru ke db 'user'
@@ -105,6 +99,7 @@ exports.updateUser = async (req, res) => {
       id
     }
   })
+
   res.json({
     message: 'update user success',
     data: id
@@ -129,10 +124,9 @@ exports.verifyUserLogin = async (req, res) => {
 
   // cek user input (pastikan inputnya string)
   if (typeof (email) !== 'string') {
-    res.status(400).json({
+    return res.status(400).json({
       message: 'input yang dimasukkan bukan string'
     })
-    return
   }
 
   // cek user ada atau tidak
@@ -141,10 +135,9 @@ exports.verifyUserLogin = async (req, res) => {
   })
 
   if (!data) {
-    res.status(404).json({
+    return res.status(404).json({
       message: 'user tidak ditemukan'
     })
-    return
   }
 
   // cek password
@@ -152,19 +145,17 @@ exports.verifyUserLogin = async (req, res) => {
   const match = await bcrypt.compare(password, dbPassword)
 
   if (!match) {
-    res.status(400).json({
+    return res.status(400).json({
       message: 'password salah'
     })
-    return
   }
 
   // cek apakah akun user sudah terverifikasi
   const verified = data.dataValues.verified
   if (!verified) {
-    res.status(401).json({
+    return res.status(401).json({
       message: 'akun belum diverifikasi'
     })
-    return
   }
 
   res.json({
@@ -185,18 +176,16 @@ exports.verifyUserEmail = async (req, res) => {
   })
 
   if (!dataToken) {
-    res.status(404).json({
+    return res.status(404).json({
       message: 'not found'
     })
-    return
   }
 
   const dbToken = dataToken.dataValues.token
   if (dbToken !== token) {
-    res.status(400).json({
+    return res.status(400).json({
       message: 'invalid token'
     })
-    return
   }
 
   await user.update({ verified: true }, {
