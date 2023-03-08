@@ -3,13 +3,13 @@ exports.loginPages = (req, res) => {
   if (req.session.user) {
     res.redirect('/admin/dashboard')
   } else {
-    res.render('login')
+    res.render('pages/login')
   }
 }
 
 // login handler
 exports.loginHandler = (req, res) => {
-  if (req.body.username === 'adminkeren' && req.body.password === 'admin123') {
+  if (req.body.username === 'admin' && req.body.password === 'admin') {
     req.session.user = {
       username: req.body.username
     }

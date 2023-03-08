@@ -20,11 +20,6 @@
               <input id="nameInput" type="text" class="form-control" placeholder="John Doe" autocomplete="off" required>
               <label>Nama Lengkap</label>
             </div>
-            <div class="form-floating mb-3">
-              <input id="emailInput" type="email" class="form-control" placeholder="contoh@example.com"
-                autocomplete="off" required>
-              <label>Email</label>
-            </div>
           </div>
           <div class="modal-footer">
             <button id="updateBtn" type="button" class="btn btn-md btn-success">Update</button>
@@ -45,10 +40,15 @@
 <script>
   const idUser = $('#idUser').val()
   axios.get(`http://localhost:3000/api/users/${idUser}`).then(response => {
+    if (!response.data.data) {
+      alert('ID User tidak ditemukan!')
+      window.location.href = '/admin/user-handler'
+      return
+    }
+
     const { name, email } = response.data.data
 
     $('#nameInput').val(name)
-    $('#emailInput').val(email)
 
     $('#userName').html(name)
     $('#userEmail').html(email)
@@ -85,7 +85,7 @@
     $('#updateBtn').on('click', () => {
       $('#updateBtn').prop('disabled', true)
       axios.put(`http://localhost:3000/api/users/${idUser}`, {
-        name: $('#nameInput').val(), email: $('#emailInput').val()
+        name: $('#nameInput').val()
       }).then((res) => {
         swal({
           title: "Sukses!",

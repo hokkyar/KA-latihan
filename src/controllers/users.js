@@ -92,9 +92,9 @@ exports.getUserById = async (req, res) => {
 
 exports.updateUser = async (req, res) => {
   const { id } = req.params
-  const { name, email } = req.body
+  const { name } = req.body
 
-  await user.update({ name, email }, {
+  await user.update({ name }, {
     where: {
       id
     }
