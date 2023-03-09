@@ -13,9 +13,15 @@
               <li class="breadcrumb-item">Kelola</li>
               <% } %>
                 <li class="breadcrumb-item active">
-                  <a href="/admin/<%= (page === 'show-user') ? 'user-handler' : page %>">
-                    <%= title %>
-                  </a>
+                  <% if(page==='show-user' ){ %>
+                    <a href="/admin/user-handler">
+                      <% }else if(page==='show-course' ){ %>
+                        <a href="/admin/course-handler">
+                          <% }else{ %>
+                            <a href="/admin/<% page %>">
+                              <% } %>
+                                <%= title %>
+                            </a>
                 </li>
                 <% if (detail ) { %>
                   <li class="breadcrumb-item">

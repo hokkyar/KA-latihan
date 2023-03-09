@@ -1,0 +1,155 @@
+<section>
+  <input type="hidden" id="idCourse" value="<%= detail.id %>">
+
+  <div class="course-container d-flex border border-2 p-4 my-3 gap-3">
+    <img src="https://www.kodingakademi.id/wp-content/uploads/2021/07/SCRATCH-3.png" alt="profile-picture" width="200"
+      height="300">
+    <div class="course-detail">
+      <h5 id="title"><span class="fw-bold">Title:</span> </h5>
+      <h5 id="category"><span class="fw-bold">Category:</span> </h5>
+      <h5 id="price"><span class="fw-bold">Price:</span> </h5>
+      <h5 id="description"><span class="fw-bold">Description:</span> </h5>
+    </div>
+  </div>
+
+  <button id="deleteBtn" class="btn btn-danger btn-sm">
+    <i class="bi bi-trash"></i>
+    Delete
+  </button>
+  <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#updateModal">
+    <i class="bi bi-pencil-square"></i>
+    Update
+  </button>
+
+  <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Update User</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <form action="">
+          <div class="modal-body">
+            <div class="form-floating mb-3">
+              <input id="titleInput" type="text" class="form-control" autocomplete="off" required>
+              <label>Judul</label>
+            </div>
+            <div class="mb-3">
+              <select id="categoryInput" class="form-select" aria-label="Default select example">
+                <option selected disabled>Pilih Kategori</option>
+                <option value="Coding">Coding</option>
+                <option value="Robotics">Robotics</option>
+                <option value="App Programming">App Programming</option>
+                <option value="Engineering">Engineering</option>
+                <option value="Bootcamp">Bootcamp</option>
+              </select>
+            </div>
+            <div class="form-floating mb-3">
+              <input id="priceInput" type="text" class="form-control" autocomplete="off" required>
+              <label>Price</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input id="descriptionInput" type="text" class="form-control" autocomplete="off" required>
+              <label>Description</label>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button id="updateBtn" type="button" class="btn btn-md btn-success">Update</button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<script src="https://code.jquery.com/jquery-3.6.3.min.js"
+  integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<script>
+  const idCourse = $('#idCourse').val()
+  axios.get(`http://localhost:3000/api/courses/${idCourse}`).then(response => {
+    if (!response.data.data) {
+      swal({
+        icon: 'error',
+        title: 'Invalid ID',
+        text: 'ID tidak ditemukan!'
+      }).then(() => {
+        window.location.href = '/admin/course-handler'
+      })
+      return
+    }
+
+    const { title, category, price, description } = response.data.data
+
+    $('#title').append(title)
+    $('#category').append(category)
+    $('#price').append(price)
+    $('#description').append(description)
+
+    $('#titleInput').val(title)
+    $('#categoryInput').val(category)
+    $('#priceInput').val(price)
+    $('#descriptionInput').val(description)
+
+    $('#deleteBtn').on('click', () => {
+      swal({
+        title: "Apakah anda yakin?",
+        text: `${title} akan dihapus`,
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      })
+        .then((willDelete) => {
+          if (willDelete) {
+            axios.delete(`http://localhost:3000/api/courses/${idCourse}`)
+            swal({
+              title: "Sukses!",
+              text: "Berhasil dihapus!",
+              icon: "success",
+              button: "OK",
+            }).then((OKclicked) => {
+              if (OKclicked) {
+                window.location.href = '/admin/course-handler'
+              } else {
+                setInterval(() => {
+                  window.location.href = '/admin/course-handler'
+                }, 1000)
+              }
+            })
+          }
+        })
+    })
+
+    $('#updateBtn').on('click', () => {
+      $('#updateBtn').prop('disabled', true)
+      axios.put(`http://localhost:3000/api/courses/${idCourse}`, {
+        title: $('#titleInput').val(),
+        category: $('#categoryInput').val(),
+        price: $('#priceInput').val(),
+        description: $('#descriptionInput').val(),
+      }).then((res) => {
+        swal({
+          title: "Sukses!",
+          text: "Berhasil diupdate!",
+          icon: "success",
+          button: "OK",
+        }).then((btnClicked) => {
+          if (btnClicked) {
+            window.location.reload()
+          } else {
+            setInterval(() => {
+              window.location.reload()
+            }, 1000)
+          }
+        })
+        $('#updateBtn').prop('disabled', false)
+      })
+    })
+  })
+
+</script>

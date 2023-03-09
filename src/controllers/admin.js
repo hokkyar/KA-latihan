@@ -47,6 +47,11 @@ exports.courseHandlerPage = (req, res) => {
   res.render('index', { page: 'course-handler', title: 'Course', sub: 'Kelola', detail: '' })
 }
 
+// show course handler page
+exports.showCoursePage = (req, res) => {
+  res.render('index', { page: 'show-course', title: 'Course', sub: 'Kelola', detail: { id: req.params.id } })
+}
+
 // event handler page
 exports.eventHandlerPage = (req, res) => {
   res.render('index', { page: 'event-handler', title: 'Event', sub: 'Kelola', detail: '' })
