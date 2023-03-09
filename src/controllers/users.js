@@ -7,7 +7,7 @@ const validator = require('validator')
 exports.getAllUsers = async (req, res) => {
   const data = await user.findAll({
     attributes: ['id', 'name', 'email', 'verified'],
-    limit: 10
+    // limit: 10
   })
   res.json({
     message: 'get all users',

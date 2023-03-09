@@ -1,10 +1,23 @@
 <section>
   <input type="hidden" id="idUser" value="<%= detail.id %>">
-  <h1 id="userName"></h1>
-  <h1 id="userEmail"></h1>
 
-  <button id="deleteBtn" class="btn btn-danger">Delete</button>
-  <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#updateModal">Update</button>
+  <div class="profile-user d-flex border border-2 p-4 my-3 gap-2">
+    <img src="https://www.kindpng.com/picc/m/451-4517876_default-profile-hd-png-download.png" alt="profile-picture"
+      width="150">
+    <div class="profile-detail">
+      <h5 id="userName"><span class="fw-bold">Nama:</span> </h5>
+      <h5 id="userEmail"><span class="fw-bold">Email:</span> </h5>
+    </div>
+  </div>
+
+  <button id="deleteBtn" class="btn btn-danger btn-sm">
+    <i class="bi bi-trash"></i>
+    Delete
+  </button>
+  <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#updateModal">
+    <i class="bi bi-pencil-square"></i>
+    Update
+  </button>
 
   <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -41,8 +54,13 @@
   const idUser = $('#idUser').val()
   axios.get(`http://localhost:3000/api/users/${idUser}`).then(response => {
     if (!response.data.data) {
-      alert('ID User tidak ditemukan!')
-      window.location.href = '/admin/user-handler'
+      swal({
+        icon: 'error',
+        title: 'Invalid ID',
+        text: 'ID tidak ditemukan!'
+      }).then(() => {
+        window.location.href = '/admin/user-handler'
+      })
       return
     }
 
@@ -50,8 +68,8 @@
 
     $('#nameInput').val(name)
 
-    $('#userName').html(name)
-    $('#userEmail').html(email)
+    $('#userName').append(name)
+    $('#userEmail').append(email)
 
     $('#deleteBtn').on('click', () => {
       swal({

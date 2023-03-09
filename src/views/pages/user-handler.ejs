@@ -33,7 +33,7 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button onclick="sendData()" type="button" class="btn btn-md btn-success">Simpan</button>
+            <button onclick="tambahData()" type="button" class="btn btn-md btn-success">Simpan</button>
           </div>
         </form>
 
@@ -48,8 +48,8 @@
         <div class="card-body">
           <h5 class="card-title">Kelola Data User</h5>
           <button type="button" class="btn btn-sm btn-success mb-3" data-bs-toggle="modal" data-bs-target="#formModal">
-            <i class="bi bi-plus-circle"></i>
-            Tambah Data
+            <i class="bi bi-person-fill-add"></i>
+            Tambah User
           </button>
 
           <table id="myTable" class="hover row-border cell-border">
@@ -77,7 +77,7 @@
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
 <script>
-  function sendData() {
+  function tambahData() {
     $('.modal-footer button').prop('disabled', true)
     const name = $('#name').val()
     const email = $('#email').val()
@@ -87,9 +87,9 @@
     // validasi
     if (name === '' || email === '' || password === '' || confirmPassword === '') {
       swal({
-        title: "Gagal!",
+        title: "Warning!",
         text: "Data tidak boleh kosong!",
-        icon: "error",
+        icon: "warning",
         button: "OK",
       })
       $('.modal-footer button').prop('disabled', false)
@@ -117,9 +117,9 @@
     }).catch(err => {
       const { message } = err.response.data
       swal({
-        title: "Gagal!",
+        title: "Warning!",
         text: message,
-        icon: "error",
+        icon: "warning",
         button: "OK",
       })
       $('.modal-footer button').prop('disabled', false)

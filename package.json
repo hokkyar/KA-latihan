@@ -7,7 +7,7 @@
     "start": "nodemon ./src/index.js",
     "generate:user": "npx sequelize-cli model:generate --name User --attributes name:string,email:string,password:string",
     "generate:emailToken": "npx sequelize-cli model:generate --name emailToken --attributes id_user:string,token:string",
-    "generate:course": "npx sequelize-cli model:generate --name course --attributes judul:string,deskripsi:string,kategori:string,harga:string,durasi:string",
+    "generate:course": "npx sequelize-cli model:generate --name course --attributes title:string,price:string,image:string,category:string,description:string,requirement:string,age:string,meetings:string,period:string,duration:string,classConsist:string",
     "migrate:up": "npx sequelize-cli db:migrate",
     "migrate:down": "npx sequelize-cli db:migrate:undo:all"
   },

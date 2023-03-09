@@ -28,7 +28,7 @@ app.use('/api', apiRoutes)
 app.use('/admin', adminRoutes)
 
 app.use((req, res, next) => res.status(404).render('pages/not-found'))
-// app.use((err, req, res, next) => res.status(500).send({ message: 'Internal Server Error', error: err }))
+app.use((err, req, res, next) => res.status(500).send({ message: 'Internal Server Error', error: err }))
 
 const PORT = process.env.PORT
 app.listen(PORT, () => console.log(`Server Running at PORT ${PORT}`))

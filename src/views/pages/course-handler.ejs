@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.3/css/jquery.dataTables.min.css">
+
 <section class="section">
 
   <!-- Modal -->
@@ -10,17 +12,34 @@
         </div>
         <form action="">
           <div class="modal-body">
-            <div class="form-floating mb-3">
-              <input type="text" name="name" class="form-control" placeholder="John Doe" autocomplete="off">
-              <label>Judul Course</label>
+            <div class="mb-3">
+              <input id="title" type="text" class="form-control" placeholder="Judul Course">
             </div>
-            <div class="form-floating mb-3">
-              <input type="email" name="email" class="form-control" placeholder="contoh@example.com" autocomplete="off">
-              <label>Email</label>
+            <div class="input-group mb-3">
+              <span class="input-group-text" id="basic-addon1">Rp.</span>
+              <input id="price" type="number" class="form-control" placeholder="Harga" aria-label="Harga"
+                aria-describedby="basic-addon1">
+            </div>
+            <div class="input-group mb-3">
+              <input id="image" type="file" class="form-control" aria-label="Gambar" placeholder="Upload Gambar"
+                aria-describedby="basic-addon1">
+            </div>
+            <div class="mb-3">
+              <select id="category" class="form-select" aria-label="Default select example">
+                <option selected>Pilih Kategori</option>
+                <option value="Coding">Coding</option>
+                <option value="Robotics">Robotics</option>
+                <option value="App Programming">App Programming</option>
+                <option value="Engineering">Engineering</option>
+                <option value="Bootcamp">Bootcamp</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <textarea id="description" class="form-control" placeholder="Deskripsi" rows="3"></textarea>
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-sm btn-success">Tambah</button>
+            <button type="button" class="btn btn-sm btn-success" onclick="tambahData()">Tambah</button>
           </div>
         </form>
       </div>
@@ -34,46 +53,107 @@
         <div class="card-body">
           <h5 class="card-title">Kelola Data Course</h5>
           <button type="button" class="btn btn-sm btn-success mb-3" data-bs-toggle="modal" data-bs-target="#formModal">
-            <i class="bi bi-plus-circle"></i>
-            Tambah Data
+            <!-- <i class="bi bi-plus-circle"></i> -->
+            <i class="bi bi-journal-plus"></i>
+            Tambah Course
           </button>
-          <table class="table datatable">
+          <table id="myTable" class="hover row-border cell-border">
             <thead>
               <tr>
-                <th scope="col">#</th>
-                <th scope="col">Judul</th>
-                <th scope="col">Terdaftar</th>
-                <th scope="col">Kategori</th>
-                <th scope="col">Action</th>
+                <th>#</th>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Action</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>Data Analyst</td>
-                <td>10</td>
-                <td>Bootcamp</td>
-                <td>
-                  <a href=""><i class="bi bi-pencil text-warning"></i></a>
-                  <span>|</span>
-                  <a href=""><i class="bi bi-trash text-danger"></i></a>
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>Roblox Intermediet</td>
-                <td>25</td>
-                <td>Coding</td>
-                <td>
-                  <a href=""><i class="bi bi-pencil text-warning"></i></a>
-                  <span>|</span>
-                  <a href=""><i class="bi bi-trash text-danger"></i></a>
-                </td>
-              </tr>
-            </tbody>
           </table>
         </div>
       </div>
     </div>
   </div>
 </section>
+
+<script src="https://code.jquery.com/jquery-3.6.3.min.js"
+  integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+<script src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<script>
+  const courses = []
+  axios.get('http://localhost:3000/api/courses').then(response => {
+    const { data } = response.data
+    data.forEach((course, i) => {
+      const singleData = {
+        "#": i + 1,
+        "title": course.title,
+        "category": course.category,
+        "price": 'Rp. ' + course.price,
+        "action": `<a href="/admin/course-handler/show/${course.id}">Lihat Detail</a>`
+      }
+      courses.push(singleData)
+    })
+    $('#myTable').DataTable({
+      "data": courses,
+      "columns": [
+        { "data": "#" },
+        { "data": "title" },
+        { "data": "category" },
+        { "data": "price" },
+        { "data": "action" },
+      ]
+    })
+  })
+
+  function tambahData() {
+    $('.modal-footer button').prop('disabled', true)
+    const title = $('#title').val()
+    const price = $('#price').val()
+    const image = $('#image').val()
+    const category = $('#category').val()
+    const description = $('#description').val()
+
+    if (title === '' || price === '' || image === '' || category === '' || description === '') {
+      swal({
+        title: "Warning!",
+        text: "Data tidak boleh kosong!",
+        icon: "warning",
+        button: "OK",
+      })
+      $('.modal-footer button').prop('disabled', false)
+      return
+    }
+
+    axios.post('http://localhost:3000/api/courses', {
+      title, price, image, category, description
+    }).then(res => {
+      swal({
+        title: "Success!",
+        text: "Berhasil disimpan!",
+        icon: "success",
+        button: "OK",
+      }).then((btnClicked) => {
+        if (btnClicked) {
+          window.location.reload()
+        } else {
+          setInterval(() => {
+            window.location.reload()
+          }, 500)
+        }
+        $('.modal-footer button').prop('disabled', false)
+      })
+    }).catch(err => {
+      const { message } = err.response.data
+      swal({
+        title: "Warning!",
+        text: message,
+        icon: "warning",
+        button: "OK",
+      })
+      $('.modal-footer button').prop('disabled', false)
+    })
+
+  }
+
+</script>

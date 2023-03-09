@@ -5,8 +5,8 @@ const UserController = require('../controllers/users')
 
 // courses
 router.get('/courses', CourseController.getAllCourses)
-router.post('/courses', CourseController.createCourse)
 router.get('/courses/:id', CourseController.getCourseById)
+router.post('/courses', CourseController.createCourse)
 router.put('/courses/:id', CourseController.updateCourse)
 router.delete('/courses/:id', CourseController.deleteCourse)
 

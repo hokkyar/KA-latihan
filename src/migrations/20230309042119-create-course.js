@@ -4,24 +4,42 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('courses', {
       id: {
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4,
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
       },
-      judul: {
+      title: {
         type: Sequelize.STRING
       },
-      deskripsi: {
+      price: {
         type: Sequelize.STRING
       },
-      tipe: {
+      image: {
         type: Sequelize.STRING
       },
-      harga: {
+      category: {
         type: Sequelize.STRING
       },
-      durasi: {
+      description: {
+        type: Sequelize.STRING
+      },
+      requirement: {
+        type: Sequelize.STRING
+      },
+      age: {
+        type: Sequelize.STRING
+      },
+      meetings: {
+        type: Sequelize.STRING
+      },
+      period: {
+        type: Sequelize.STRING
+      },
+      duration: {
+        type: Sequelize.STRING
+      },
+      classConsist: {
         type: Sequelize.STRING
       },
       createdAt: {
