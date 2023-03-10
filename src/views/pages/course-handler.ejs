@@ -10,22 +10,22 @@
           <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Course</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <form action="">
+        <form action="" enctype="multipart/form-data">
           <div class="modal-body">
             <div class="mb-3">
-              <input id="title" type="text" class="form-control" placeholder="Judul Course">
+              <input id="title" name="title" type="text" class="form-control" placeholder="Judul Course">
             </div>
             <div class="input-group mb-3">
               <span class="input-group-text" id="basic-addon1">Rp.</span>
-              <input id="price" type="number" class="form-control" placeholder="Harga" aria-label="Harga"
+              <input id="price" name="price" type="number" class="form-control" placeholder="Harga" aria-label="Harga"
                 aria-describedby="basic-addon1">
             </div>
             <div class="input-group mb-3">
-              <input id="image" type="file" class="form-control" aria-label="Gambar" placeholder="Upload Gambar"
-                aria-describedby="basic-addon1">
+              <input id="image" name="image" type="file" class="form-control" aria-label="Gambar"
+                placeholder="Upload Gambar" aria-describedby="basic-addon1">
             </div>
             <div class="mb-3">
-              <select id="category" class="form-select" aria-label="Default select example">
+              <select id="category" name="category" class="form-select" aria-label="Default select example">
                 <option selected>Pilih Kategori</option>
                 <option value="Coding">Coding</option>
                 <option value="Robotics">Robotics</option>
@@ -35,11 +35,12 @@
               </select>
             </div>
             <div class="mb-3">
-              <textarea id="description" class="form-control" placeholder="Deskripsi" rows="3"></textarea>
+              <textarea id="description" name="description" class="form-control" placeholder="Deskripsi"
+                rows="3"></textarea>
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-sm btn-success" onclick="tambahData()">Tambah</button>
+            <button type="submit" class="btn btn-sm btn-success">Tambah</button>
           </div>
         </form>
       </div>
@@ -53,7 +54,6 @@
         <div class="card-body">
           <h5 class="card-title">Kelola Data Course</h5>
           <button type="button" class="btn btn-sm btn-success mb-3" data-bs-toggle="modal" data-bs-target="#formModal">
-            <!-- <i class="bi bi-plus-circle"></i> -->
             <i class="bi bi-journal-plus"></i>
             Tambah Course
           </button>
@@ -106,8 +106,10 @@
     })
   })
 
-  function tambahData() {
+  $('form').submit(function (event) {
+    event.preventDefault()
     $('.modal-footer button').prop('disabled', true)
+
     const title = $('#title').val()
     const price = $('#price').val()
     const image = $('#image').val()
@@ -124,6 +126,62 @@
       $('.modal-footer button').prop('disabled', false)
       return
     }
+
+    const formData = new FormData($(this)[0])
+
+    $.ajax({
+      url: 'http://localhost:3000/api/courses',
+      type: 'POST',
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: (response) => {
+        swal({
+          title: "Success!",
+          text: "Berhasil disimpan!",
+          icon: "success",
+          button: "OK",
+        }).then((clicked) => {
+          if (clicked) {
+            window.location.reload()
+          } else {
+            setInterval(() => {
+              window.location.reload()
+            }, 500)
+          }
+          $('.modal-footer button').prop('disabled', false)
+        })
+      },
+      error: (xhr, status, error) => {
+        swal({
+          title: "Error!",
+          text: xhr.responseText,
+          icon: "error",
+          button: "OK",
+        })
+        $('.modal-footer button').prop('disabled', false)
+      }
+    })
+  })
+
+  function tambahData(e) {
+    // $('.modal-footer button').prop('disabled', true)
+    // const title = $('#title').val()
+    // const price = $('#price').val()
+    // const image = $('#image').val()
+    // const category = $('#category').val()
+    // const description = $('#description').val()
+
+    // if (title === '' || price === '' || image === '' || category === '' || description === '') {
+    //   swal({
+    //     title: "Warning!",
+    //     text: "Data tidak boleh kosong!",
+    //     icon: "warning",
+    //     button: "OK",
+    //   })
+    //   $('.modal-footer button').prop('disabled', false)
+    //   return
+    // }
 
     axios.post('http://localhost:3000/api/courses', {
       title, price, image, category, description

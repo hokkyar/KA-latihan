@@ -2,8 +2,7 @@
   <input type="hidden" id="idCourse" value="<%= detail.id %>">
 
   <div class="course-container d-flex border border-2 p-4 my-3 gap-3">
-    <img src="https://www.kodingakademi.id/wp-content/uploads/2021/07/SCRATCH-3.png" alt="profile-picture" width="200"
-      height="300">
+    <img id="image" src="" alt="course-banner" width="200" height="300">
     <div class="course-detail">
       <h5 id="title"><span class="fw-bold">Title:</span> </h5>
       <h5 id="category"><span class="fw-bold">Category:</span> </h5>
@@ -84,12 +83,16 @@
       return
     }
 
-    const { title, category, price, description } = response.data.data
+    const { title, category, price, description, image } = response.data.data
+
+    console.log(image)
 
     $('#title').append(title)
     $('#category').append(category)
     $('#price').append(price)
     $('#description').append(description)
+    const source = image.split('\\')
+    $('#image').attr('src', '../../../assets/' + source[2])
 
     $('#titleInput').val(title)
     $('#categoryInput').val(category)

@@ -24,7 +24,11 @@ exports.getCourseById = async (req, res) => {
 }
 
 exports.createCourse = async (req, res) => {
-  const { title, price, image, description, category, requirement, age, meetings, period, duration, classConsist } = req.body
+  const { title, price, description, category, requirement, age, meetings, period, duration, classConsist } = req.body
+  if (!req.file) {
+    console.log('Gambar belum diupload')
+  }
+  const image = req.file.path
   const id = nanoid(16)
   await course.create({
     id, title, price, image, description, category, requirement: '-', age: '-', meetings: '-', period: '-', duration: '-', classConsist: '-'

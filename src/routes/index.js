@@ -3,10 +3,12 @@ const router = express.Router()
 const CourseController = require('../controllers/courses')
 const UserController = require('../controllers/users')
 
+const upload = require('../middleware/upload')
+
 // courses
 router.get('/courses', CourseController.getAllCourses)
 router.get('/courses/:id', CourseController.getCourseById)
-router.post('/courses', CourseController.createCourse)
+router.post('/courses', upload.single('image'), CourseController.createCourse)
 router.put('/courses/:id', CourseController.updateCourse)
 router.delete('/courses/:id', CourseController.deleteCourse)
 
