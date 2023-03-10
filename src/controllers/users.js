@@ -3,6 +3,7 @@ const { nanoid } = require('nanoid')
 const bcrypt = require('bcrypt')
 const nodemailer = require('nodemailer')
 const validator = require('validator')
+const jwt = require('jsonwebtoken')
 
 exports.getAllUsers = async (req, res) => {
   const data = await user.findAll({
@@ -151,16 +152,19 @@ exports.verifyUserLogin = async (req, res) => {
   }
 
   // cek apakah akun user sudah terverifikasi
-  const verified = data.dataValues.verified
+  const { id, name, verified } = data.dataValues
   if (!verified) {
     return res.status(401).json({
       message: 'akun belum diverifikasi'
     })
   }
 
+  const token = jwt.sign({ id, name, email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' })
+
   res.json({
     message: 'login success',
-    data: data.dataValues.id
+    data: id,
+    token
   })
 }
 
