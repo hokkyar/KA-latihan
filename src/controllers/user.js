@@ -3,7 +3,6 @@ const { nanoid } = require('nanoid')
 const bcrypt = require('bcrypt')
 const nodemailer = require('nodemailer')
 const validator = require('validator')
-const jwt = require('jsonwebtoken')
 
 exports.getAllUsers = async (req, res) => {
   const data = await user.findAll({
@@ -65,7 +64,7 @@ exports.registerUser = async (req, res) => {
     })
 
     res.status(201).json({
-      message: 'Register berhasil', // silahkan cek email anda untuk verifikasi
+      message: 'Register berhasil',
       data: id,
       info
     })
@@ -120,53 +119,54 @@ exports.deleteUser = async (req, res) => {
   })
 }
 
-exports.verifyUserLogin = async (req, res) => {
-  const { email, password } = req.body
+// exports.verifyUserLogin = async (req, res) => {
+//   const { email, password } = req.body
 
-  // cek user input (pastikan inputnya string)
-  if (typeof (email) !== 'string') {
-    return res.status(400).json({
-      message: 'input yang dimasukkan bukan string'
-    })
-  }
+//   // cek user input (pastikan inputnya string)
+//   if (typeof (email) !== 'string') {
+//     return res.status(400).json({
+//       message: 'input yang dimasukkan bukan string'
+//     })
+//   }
 
-  // cek user ada atau tidak
-  const data = await user.findOne({
-    where: { email }
-  })
+//   // cek user ada atau tidak
+//   const data = await user.findOne({
+//     where: { email }
+//   })
 
-  if (!data) {
-    return res.status(404).json({
-      message: 'user tidak ditemukan'
-    })
-  }
+//   if (!data) {
+//     return res.status(404).json({
+//       message: 'user tidak ditemukan'
+//     })
+//   }
 
-  // cek password
-  const dbPassword = data.dataValues.password
-  const match = await bcrypt.compare(password, dbPassword)
+//   // cek password
+//   const dbPassword = data.dataValues.password
+//   const match = await bcrypt.compare(password, dbPassword)
 
-  if (!match) {
-    return res.status(400).json({
-      message: 'password salah'
-    })
-  }
+//   if (!match) {
+//     return res.status(400).json({
+//       message: 'password salah'
+//     })
+//   }
 
-  // cek apakah akun user sudah terverifikasi
-  const { id, name, verified } = data.dataValues
-  if (!verified) {
-    return res.status(401).json({
-      message: 'akun belum diverifikasi'
-    })
-  }
+//   // cek apakah akun user sudah terverifikasi
+//   const { id, name, verified } = data.dataValues
+//   if (!verified) {
+//     return res.status(401).json({
+//       message: 'akun belum diverifikasi'
+//     })
+//   }
 
-  const token = jwt.sign({ id, name, email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' })
+//   const token = jwt.sign({ id, name, email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' })
+//   // buat dan add ke db refresh token
 
-  res.json({
-    message: 'login success',
-    data: id,
-    token
-  })
-}
+//   res.json({
+//     message: 'login success',
+//     data: id,
+//     token
+//   })
+// }
 
 exports.verifyUserEmail = async (req, res) => {
   // localhost:3000/api/users/verify?id=123&token=123

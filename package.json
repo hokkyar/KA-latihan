@@ -5,9 +5,12 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon ./src/index.js",
-    "generate:user": "npx sequelize-cli model:generate --name User --attributes name:string,email:string,password:string",
-    "generate:emailToken": "npx sequelize-cli model:generate --name emailToken --attributes id_user:string,token:string",
-    "generate:course": "npx sequelize-cli model:generate --name course --attributes title:string,price:string,image:string,category:string,description:string,requirement:string,age:string,meetings:string,period:string,duration:string,classConsist:string",
+    "generate:authToken": "npx sequelize-cli model:generate --name authToken --attributes token:string",
+    "generate:admin": "npx sequelize-cli model:generate --name admin --attributes username:string,password:string",
+    "generate:article": "npx sequelize-cli model:generate --name article --attributes title:string,content:string",
+    "generate:user": "npx sequelize-cli model:generate --name user --attributes name:string,email:string,password:string",
+    "generate:product": "npx sequelize-cli model:generate --name product --attributes name:string,price:string,desc:string,img:string,catId:string,date:string,quota:string",
+    "generate:category": "npx sequelize-cli model:generate --name category --attributes name:string",
     "migrate:up": "npx sequelize-cli db:migrate",
     "migrate:down": "npx sequelize-cli db:migrate:undo:all"
   },

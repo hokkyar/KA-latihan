@@ -1,0 +1,27 @@
+GET http://localhost:3000/api/courses
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IlpZOGlKNUlfTi1CRyIsImlhdCI6MTY3ODUzMzQ0Mn0.DW7247dtCar1z8FxDqMWh_UxS3SpxTb6ac3nRCHEfmM
+
+###
+POST http://localhost:3000/api/authentication
+Content-Type: application/json
+
+{
+  "email": "hokky@undiksha.ac.id",
+  "password": "123" 
+}
+
+###
+PUT http://localhost:3000/api/authentication
+Content-Type: application/json
+
+{
+  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IlpZOGlKNUlfTi1CRyIsImlhdCI6MTY3ODUzMzM1NSwiZXhwIjoxNjc4NjE5NzU1fQ.zvQB9f_4elX71aUjKOIC4BPf3NObGld2s7i7LdL6VOE"
+}
+
+###
+DELETE http://localhost:3000/api/authentication
+Content-Type: application/json
+
+{
+  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IlpZOGlKNUlfTi1CRyIsImlhdCI6MTY3ODUzMzM1NSwiZXhwIjoxNjc4NjE5NzU1fQ.zvQB9f_4elX71aUjKOIC4BPf3NObGld2s7i7LdL6VOE"
+}

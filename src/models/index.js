@@ -43,8 +43,10 @@ db.Sequelize = Sequelize;
 const UserModel = require('./user')
 const EmailTokenModel = require('./emailtoken')
 const CourseModel = require('./course')
+const AuthenticationModel = require('./authentication')
 db.user = UserModel(sequelize, Sequelize)
 db.emailToken = EmailTokenModel(sequelize, Sequelize)
 db.course = CourseModel(sequelize, Sequelize)
+db.authentication = AuthenticationModel(sequelize, Sequelize)
 
 module.exports = db;
