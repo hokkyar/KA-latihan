@@ -41,12 +41,27 @@ db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
 const UserModel = require('./user')
-const EmailTokenModel = require('./emailtoken')
-const CourseModel = require('./course')
-const AuthenticationModel = require('./authentication')
-db.user = UserModel(sequelize, Sequelize)
-db.emailToken = EmailTokenModel(sequelize, Sequelize)
-db.course = CourseModel(sequelize, Sequelize)
-db.authentication = AuthenticationModel(sequelize, Sequelize)
+const ArticleModel = require('./article')
+const AuthTokenModel = require('./authtoken')
+const ProductModel = require('./product')
+const AdminModel = require('./admin')
+const CategoryModel = require('./category')
+
+db.User = UserModel(sequelize, Sequelize)
+db.Article = ArticleModel(sequelize, Sequelize)
+db.AuthToken = AuthTokenModel(sequelize, Sequelize)
+db.Product = ProductModel(sequelize, Sequelize)
+db.Admin = AdminModel(sequelize, Sequelize)
+db.Category = CategoryModel(sequelize, Sequelize)
+
+db.Category.hasMany(db.Product, {
+  as: 'product',
+  foreignKey: 'catId'
+})
+db.Product.belongsTo(db.Category, {
+  as: 'category',
+  foreignKey: 'catId'
+})
+
 
 module.exports = db;

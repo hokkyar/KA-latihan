@@ -1,0 +1,4 @@
+GET http://localhost:3000/cb
+
+###
+GET https://1b17-103-157-49-68.ap.ngrok.io/api/users

@@ -1,9 +1,19 @@
-const { course } = require('../models/index')
+const { Product, Category } = require('../models/index')
 const { nanoid } = require('nanoid')
 
 exports.getAllCourses = async (req, res) => {
-  const data = await course.findAll({
-    attributes: ['id', 'title', 'price', 'description', 'image', 'category']
+  const data = await Product.findAll({
+    attributes: ['id', 'name', 'quota', 'price'],
+    where: {
+      catId: 1
+    },
+    include: [
+      {
+        model: Category,
+        as: 'category',
+        attributes: ['name']
+      }
+    ]
   })
   res.json({
     message: 'get all courses',
@@ -12,10 +22,17 @@ exports.getAllCourses = async (req, res) => {
 }
 
 exports.getCourseById = async (req, res) => {
-  const data = await course.findOne({
+  const data = await Product.findOne({
     where: {
       id: req.params.id
-    }
+    },
+    include: [
+      {
+        model: Category,
+        as: 'category',
+        attributes: ['name']
+      }
+    ]
   })
   res.json({
     message: 'get course by id',
@@ -24,15 +41,13 @@ exports.getCourseById = async (req, res) => {
 }
 
 exports.createCourse = async (req, res) => {
-  const { title, price, description, category, requirement, age, meetings, period, duration, classConsist } = req.body
+  const { name, price, desc, quota } = req.body
   if (!req.file) {
     console.log('Gambar belum diupload')
   }
-  const image = req.file.path
-  const id = nanoid(16)
-  await course.create({
-    id, title, price, image, description, category, requirement: '-', age: '-', meetings: '-', period: '-', duration: '-', classConsist: '-'
-  })
+  const img = req.file.path
+  const id = 'crs-' + nanoid(16)
+  await Product.create({ id, name, price, date: null, quota, img, desc, catId: 1 })
   res.status(201).json({
     message: 'create course success',
     id
@@ -41,9 +56,9 @@ exports.createCourse = async (req, res) => {
 
 exports.updateCourse = async (req, res) => {
   const { id } = req.params
-  const { title, price, image, description, category, requirement, age, meetings, period, duration, classConsist } = req.body
-  await course.update({
-    title, price, image, description, category, requirement, age, meetings, period, duration, classConsist
+  const { name, price, desc, img, quota } = req.body
+  await Product.update({
+    name, price, desc, img, quota
   }, {
     where: {
       id
@@ -57,7 +72,7 @@ exports.updateCourse = async (req, res) => {
 
 exports.deleteCourse = async (req, res) => {
   const { id } = req.params
-  await course.destroy({
+  await Product.destroy({
     where: {
       id
     }

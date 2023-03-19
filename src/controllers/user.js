@@ -1,11 +1,11 @@
-const { user, emailToken } = require('../models/index')
+const { User, AuthToken } = require('../models/index')
 const { nanoid } = require('nanoid')
 const bcrypt = require('bcrypt')
 const nodemailer = require('nodemailer')
 const validator = require('validator')
 
 exports.getAllUsers = async (req, res) => {
-  const data = await user.findAll({
+  const data = await User.findAll({
     attributes: ['id', 'name', 'email', 'verified'],
     // limit: 10
   })
@@ -20,31 +20,30 @@ exports.registerUser = async (req, res) => {
     const { name, email, password, confirmPassword } = req.body
 
     // cek apakah email valid
-    if (!validator.isEmail(email)) return res.status(400).json({ message: 'email tidak valid' })
+    if (!validator.isEmail(email)) return res.status(400).json({ message: 'Email tidak valid' })
 
     // cek apakah password dan confirmPassword sama
-    if (password !== confirmPassword) return res.status(400).json({ message: 'password dan confirm password tidak sama' })
+    if (password !== confirmPassword) return res.status(400).json({ message: 'Password dan confirm password tidak sama' })
 
     // cek apakah email sudah ada
-    const data = await user.findOne({
+    const data = await User.findOne({
       where: {
         email
       }
     })
 
     if (data) {
-      return res.status(400).json({ message: 'email sudah terdaftar' })
+      return res.status(400).json({ message: 'Email sudah terdaftar' })
     }
 
-    // menambahkan user baru ke db 'user'
-    const id = nanoid(12)
+    const id = 'usr-' + nanoid(12)
     const salt = await bcrypt.genSalt()
     const hashedPassword = await bcrypt.hash(password, salt)
-    await user.create({ id, name, email, password: hashedPassword })
+    await User.create({ id, name, email, password: hashedPassword, verified: false })
 
-    // menambahkan token verifikasi ke db 'emailToken'
+    // menambahkan token verifikasi ke db 'AuthToken'
     const token = nanoid(20)
-    await emailToken.create({ id_user: id, token })
+    await AuthToken.create({ token, userId: id })
 
     // kirim link ke email user
     const transporter = await nodemailer.createTransport({
@@ -54,9 +53,8 @@ exports.registerUser = async (req, res) => {
         pass: process.env.ADMIN_APP_PASSWORD
       }
     })
-
     const link = `${process.env.HOST}/api/users/verify?id=${id}&token=${token}`
-    const info = await transporter.sendMail({
+    await transporter.sendMail({
       from: 'no-reply@koding-akademi',
       to: email,
       subject: "Please confirm your Email account",
@@ -65,8 +63,7 @@ exports.registerUser = async (req, res) => {
 
     res.status(201).json({
       message: 'Register berhasil',
-      data: id,
-      info
+      data: id
     })
 
   } catch (error) {
@@ -77,138 +74,95 @@ exports.registerUser = async (req, res) => {
 }
 
 exports.getUserById = async (req, res) => {
-  const data = await user.findOne({
-    where: {
-      id: req.params.id
-    },
-    attributes: ['id', 'name', 'email', 'verified']
-  })
-
-  res.json({
-    message: 'get user by id',
-    data
-  })
+  try {
+    const data = await User.findOne({
+      where: {
+        id: req.params.id
+      },
+      attributes: ['id', 'name', 'email', 'verified']
+    })
+    res.json({
+      message: 'get user by id',
+      data
+    })
+  } catch (err) {
+    res.status(404).json({ error: err })
+  }
 }
 
 exports.updateUser = async (req, res) => {
   const { id } = req.params
   const { name } = req.body
+  try {
+    await User.update({ name }, {
+      where: {
+        id
+      }
+    })
 
-  await user.update({ name }, {
-    where: {
-      id
-    }
-  })
-
-  res.json({
-    message: 'update user success',
-    data: id
-  })
+    res.json({
+      message: 'update user success',
+      data: id
+    })
+  } catch (err) {
+    res.json({ error: err })
+  }
 }
 
 exports.deleteUser = async (req, res) => {
   const { id } = req.params
-  await user.destroy({
-    where: {
-      id
-    }
-  })
-  res.json({
-    message: 'delete user success',
-    data: id
-  })
+  try {
+    await User.destroy({
+      where: {
+        id
+      }
+    })
+    res.json({
+      message: 'delete user success',
+      data: id
+    })
+  } catch (err) {
+    res.status(404).json({ error: err })
+  }
 }
 
-// exports.verifyUserLogin = async (req, res) => {
-//   const { email, password } = req.body
-
-//   // cek user input (pastikan inputnya string)
-//   if (typeof (email) !== 'string') {
-//     return res.status(400).json({
-//       message: 'input yang dimasukkan bukan string'
-//     })
-//   }
-
-//   // cek user ada atau tidak
-//   const data = await user.findOne({
-//     where: { email }
-//   })
-
-//   if (!data) {
-//     return res.status(404).json({
-//       message: 'user tidak ditemukan'
-//     })
-//   }
-
-//   // cek password
-//   const dbPassword = data.dataValues.password
-//   const match = await bcrypt.compare(password, dbPassword)
-
-//   if (!match) {
-//     return res.status(400).json({
-//       message: 'password salah'
-//     })
-//   }
-
-//   // cek apakah akun user sudah terverifikasi
-//   const { id, name, verified } = data.dataValues
-//   if (!verified) {
-//     return res.status(401).json({
-//       message: 'akun belum diverifikasi'
-//     })
-//   }
-
-//   const token = jwt.sign({ id, name, email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' })
-//   // buat dan add ke db refresh token
-
-//   res.json({
-//     message: 'login success',
-//     data: id,
-//     token
-//   })
-// }
-
 exports.verifyUserEmail = async (req, res) => {
-  // localhost:3000/api/users/verify?id=123&token=123
   const { id, token } = req.query
-
-  // cek token di db emailToken
-  const dataToken = await emailToken.findOne({
+  const dataToken = await AuthToken.findOne({
     where: {
-      id_user: id
+      token
     }
   })
 
   if (!dataToken) {
     return res.status(404).json({
-      message: 'not found'
+      message: 'Not found'
     })
   }
 
   const dbToken = dataToken.dataValues.token
   if (dbToken !== token) {
     return res.status(400).json({
-      message: 'invalid token'
+      message: 'Invalid token'
     })
   }
 
-  await user.update({ verified: true }, {
+  await User.update({ verified: true }, {
     where: {
       id
     }
   })
 
-  await emailToken.destroy({
+  await AuthToken.destroy({
     where: {
-      id_user: id
+      userId: id
     }
   })
 
   const verifiedPage = `
   <div style='height: 95vh; display: flex; align-items:center; justify-content: center;'>
-    <p style='color: green; text-align: center; font-size: 1.2rem;'>Email berhasil diverifikasi...</p>
+    <p style='color: green; text-align: center; font-size: 1rem;'>Email berhasil diverifikasi...</p>
   </div>
   `
   res.send(verifiedPage)
-
 }

@@ -5,14 +5,16 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon ./src/index.js",
-    "generate:authToken": "npx sequelize-cli model:generate --name authToken --attributes token:string",
+    "generate:authToken": "npx sequelize-cli model:generate --name authToken --attributes token:string,userId:string",
     "generate:admin": "npx sequelize-cli model:generate --name admin --attributes username:string,password:string",
     "generate:article": "npx sequelize-cli model:generate --name article --attributes title:string,content:string",
-    "generate:user": "npx sequelize-cli model:generate --name user --attributes name:string,email:string,password:string",
+    "generate:user": "npx sequelize-cli model:generate --name user --attributes name:string,email:string,password:string,verified:string",
     "generate:product": "npx sequelize-cli model:generate --name product --attributes name:string,price:string,desc:string,img:string,catId:string,date:string,quota:string",
     "generate:category": "npx sequelize-cli model:generate --name category --attributes name:string",
     "migrate:up": "npx sequelize-cli db:migrate",
-    "migrate:down": "npx sequelize-cli db:migrate:undo:all"
+    "migrate:down": "npx sequelize-cli db:migrate:undo:all",
+    "seed:category": "npx sequelize-cli seed:generate --name initial-category",
+    "generate:seed": "npx sequelize-cli db:seed:all"
   },
   "keywords": [],
   "author": "",
@@ -31,7 +33,8 @@
     "passport": "^0.6.0",
     "passport-google-oauth2": "^0.2.0",
     "sequelize": "^6.29.0",
-    "validator": "^13.9.0"
+    "validator": "^13.9.0",
+    "xendit-node": "^1.21.10"
   },
   "devDependencies": {
     "bcrypt": "^5.1.0",

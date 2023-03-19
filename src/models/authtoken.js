@@ -3,16 +3,17 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class authentication extends Model {
+  class authToken extends Model {
     static associate(models) {
       // define association here
     }
   }
-  authentication.init({
-    token: DataTypes.STRING
+  authToken.init({
+    token: DataTypes.STRING,
+    userId: DataTypes.STRING
   }, {
     sequelize,
-    modelName: 'authentication',
+    modelName: 'authToken',
   });
-  return authentication;
+  return authToken;
 };
