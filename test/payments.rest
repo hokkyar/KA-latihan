@@ -1,0 +1,9 @@
+### CREATE PAYMENT
+POST http://localhost:3000/api/payments
+Content-Type: application/json
+
+{
+  "amount": 100000, 
+  "payerEmail": "hokkyar@gmail.com", 
+  "description": "Pembayaran produk A"
+}

@@ -12,7 +12,7 @@ const authUserToken = (req, res, next) => {
     req.user = decodedToken
     next()
   } catch (err) {
-    res.status(403).json({ message: 'Token tidak valid' })
+    return res.status(403).json({ message: 'Token tidak valid' })
   }
 }
 

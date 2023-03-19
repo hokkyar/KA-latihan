@@ -1,0 +1,14 @@
+### GET ALL ARTICLES 
+GET http://localhost:3000/api/articles
+
+### GET ARTICLE BY ID 
+GET http://localhost:3000/api/articles/123
+
+### CREATE ARTICLES 
+POST http://localhost:3000/api/articles
+
+### UPDATE ARTICLES 
+PUT http://localhost:3000/api/articles/123
+
+### DELETE ARTICLES 
+DELETE http://localhost:3000/api/articles/123

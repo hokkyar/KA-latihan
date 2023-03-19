@@ -3,33 +3,33 @@ const { Article } = require('../../models/index')
 
 exports.getAllArticles = async (req, res) => {
   res.json({
-    message: 'get all articles',
+    message: 'Get all articles',
   })
 }
 
 exports.getArticleById = async (req, res) => {
   res.json({
-    message: 'get article by id',
+    message: 'Get article by id',
   })
 }
 
-exports.createArticle = async (req, res) => {
+exports.postArticle = async (req, res) => {
   res.status(201).json({
-    message: 'create article success',
-    id
+    message: 'Create article success',
+    id: '123'
   })
 }
 
 exports.updateArticle = async (req, res) => {
   res.json({
-    message: 'update article success',
-    id
+    message: 'Update article success',
+    id: '123'
   })
 }
 
 exports.deleteArticle = async (req, res) => {
   res.json({
-    message: 'delete article success',
-    id
+    message: 'Delete article success',
+    id: '123'
   })
 }

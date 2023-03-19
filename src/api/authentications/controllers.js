@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken')
 const validator = require('validator')
 const InvariantError = require('../../exceptions/InvariantError')
-
 const {
   loginUserService,
   addRefreshTokenService,
