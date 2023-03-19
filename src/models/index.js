@@ -54,14 +54,16 @@ db.Product = ProductModel(sequelize, Sequelize)
 db.Admin = AdminModel(sequelize, Sequelize)
 db.Category = CategoryModel(sequelize, Sequelize)
 
-db.Category.hasMany(db.Product, {
+const { Category, Product } = db
+
+// relasi category dan product (one to many)
+Category.hasMany(Product, {
   as: 'product',
   foreignKey: 'catId'
 })
-db.Product.belongsTo(db.Category, {
+Product.belongsTo(Category, {
   as: 'category',
   foreignKey: 'catId'
 })
-
 
 module.exports = db;
