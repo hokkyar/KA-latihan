@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.3/css/jquery.dataTables.min.css">
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jodit/3.24.2/jodit.es2018.min.css" /> -->
 
 <section class="section">
 
@@ -6,14 +7,16 @@
   <div class="modal fade" id="formModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
+
         <div class="modal-header">
           <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Course</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
+
         <form action="" enctype="multipart/form-data">
           <div class="modal-body">
             <div class="mb-3">
-              <input id="title" name="title" type="text" class="form-control" placeholder="Judul Course">
+              <input id="name" name="name" type="text" class="form-control" placeholder="Judul Course">
             </div>
             <div class="input-group mb-3">
               <span class="input-group-text" id="basic-addon1">Rp.</span>
@@ -21,10 +24,14 @@
                 aria-describedby="basic-addon1">
             </div>
             <div class="input-group mb-3">
-              <input id="image" name="image" type="file" class="form-control" aria-label="Gambar"
+              <input id="quota" name="quota" type="number" class="form-control" placeholder="Quota" aria-label="Quota"
+                aria-describedby="basic-addon1">
+            </div>
+            <div class="input-group mb-3">
+              <input id="img" name="img" type="file" class="form-control" aria-label="Gambar"
                 placeholder="Upload Gambar" aria-describedby="basic-addon1">
             </div>
-            <div class="mb-3">
+            <!-- <div class="mb-3">
               <select id="category" name="category" class="form-select" aria-label="Default select example">
                 <option selected>Pilih Kategori</option>
                 <option value="Coding">Coding</option>
@@ -33,11 +40,13 @@
                 <option value="Engineering">Engineering</option>
                 <option value="Bootcamp">Bootcamp</option>
               </select>
-            </div>
+            </div> -->
             <div class="mb-3">
-              <textarea id="description" name="description" class="form-control" placeholder="Deskripsi"
-                rows="3"></textarea>
+              <textarea id="desc" name="desc" class="form-control" placeholder="Deskripsi" rows="3"></textarea>
             </div>
+            <!-- <div class="mb-3">
+              <textarea id="editor" name="editor"></textarea>
+            </div> -->
           </div>
           <div class="modal-footer">
             <button type="submit" class="btn btn-sm btn-success">Tambah</button>
@@ -61,8 +70,8 @@
             <thead>
               <tr>
                 <th>#</th>
-                <th>Title</th>
-                <th>Category</th>
+                <th>Name</th>
+                <th>Quota</th>
                 <th>Price</th>
                 <th>Action</th>
               </tr>
@@ -77,18 +86,21 @@
 <script src="https://code.jquery.com/jquery-3.6.3.min.js"
   integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
 <script src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jodit/3.24.2/jodit.es2018.min.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
 <script>
   const courses = []
+  // const editor = Jodit.make('#editor');
+  // editor.value = '<p>start</p>';
   axios.get('http://localhost:3000/api/courses').then(response => {
     const { data } = response.data
     data.forEach((course, i) => {
       const singleData = {
         "#": i + 1,
-        "title": course.title,
-        "category": course.category,
+        "name": course.name,
+        "quota": course.quota,
         "price": 'Rp. ' + course.price,
         "action": `<a href="/admin/course-handler/show/${course.id}">Lihat Detail</a>`
       }
@@ -98,8 +110,8 @@
       "data": courses,
       "columns": [
         { "data": "#" },
-        { "data": "title" },
-        { "data": "category" },
+        { "data": "name" },
+        { "data": "quota" },
         { "data": "price" },
         { "data": "action" },
       ]
@@ -110,13 +122,13 @@
     event.preventDefault()
     $('.modal-footer button').prop('disabled', true)
 
-    const title = $('#title').val()
+    const name = $('#name').val()
     const price = $('#price').val()
-    const image = $('#image').val()
-    const category = $('#category').val()
-    const description = $('#description').val()
+    const img = $('#img').val()
+    const quota = $('#quota').val()
+    const desc = $('#desc').val()
 
-    if (title === '' || price === '' || image === '' || category === '' || description === '') {
+    if (name === '' || price === '' || img === '' || quota === '' || desc === '') {
       swal({
         title: "Warning!",
         text: "Data tidak boleh kosong!",
@@ -163,55 +175,4 @@
       }
     })
   })
-
-  function tambahData(e) {
-    // $('.modal-footer button').prop('disabled', true)
-    // const title = $('#title').val()
-    // const price = $('#price').val()
-    // const image = $('#image').val()
-    // const category = $('#category').val()
-    // const description = $('#description').val()
-
-    // if (title === '' || price === '' || image === '' || category === '' || description === '') {
-    //   swal({
-    //     title: "Warning!",
-    //     text: "Data tidak boleh kosong!",
-    //     icon: "warning",
-    //     button: "OK",
-    //   })
-    //   $('.modal-footer button').prop('disabled', false)
-    //   return
-    // }
-
-    axios.post('http://localhost:3000/api/courses', {
-      title, price, image, category, description
-    }).then(res => {
-      swal({
-        title: "Success!",
-        text: "Berhasil disimpan!",
-        icon: "success",
-        button: "OK",
-      }).then((btnClicked) => {
-        if (btnClicked) {
-          window.location.reload()
-        } else {
-          setInterval(() => {
-            window.location.reload()
-          }, 500)
-        }
-        $('.modal-footer button').prop('disabled', false)
-      })
-    }).catch(err => {
-      const { message } = err.response.data
-      swal({
-        title: "Warning!",
-        text: message,
-        icon: "warning",
-        button: "OK",
-      })
-      $('.modal-footer button').prop('disabled', false)
-    })
-
-  }
-
 </script>

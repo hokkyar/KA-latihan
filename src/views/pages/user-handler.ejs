@@ -96,7 +96,7 @@
       return
     }
 
-    axios.post('http://localhost:3000/api/users/register', {
+    axios.post('http://localhost:3000/api/users', {
       name, email, password, confirmPassword
     }).then(res => {
       swal({

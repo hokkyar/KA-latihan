@@ -2,45 +2,25 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('courses', {
+    await queryInterface.createTable('users', {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
         allowNull: false,
         primaryKey: true,
       },
-      title: {
+      name: {
         type: Sequelize.STRING
       },
-      price: {
+      email: {
         type: Sequelize.STRING
       },
-      image: {
+      password: {
         type: Sequelize.STRING
       },
-      category: {
-        type: Sequelize.STRING
-      },
-      description: {
-        type: Sequelize.STRING
-      },
-      requirement: {
-        type: Sequelize.STRING
-      },
-      age: {
-        type: Sequelize.STRING
-      },
-      meetings: {
-        type: Sequelize.STRING
-      },
-      period: {
-        type: Sequelize.STRING
-      },
-      duration: {
-        type: Sequelize.STRING
-      },
-      classConsist: {
-        type: Sequelize.STRING
+      verified: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
       },
       createdAt: {
         allowNull: false,
@@ -53,6 +33,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('courses');
+    await queryInterface.dropTable('users');
   }
 };

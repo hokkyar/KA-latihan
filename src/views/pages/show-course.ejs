@@ -2,12 +2,13 @@
   <input type="hidden" id="idCourse" value="<%= detail.id %>">
 
   <div class="course-container d-flex border border-2 p-4 my-3 gap-3">
-    <img id="image" src="" alt="course-banner" width="200" height="300">
+    <img id="img" src="" alt="course-banner" width="200" height="300">
     <div class="course-detail">
-      <h5 id="title"><span class="fw-bold">Title:</span> </h5>
+      <h5 id="name"><span class="fw-bold">Name:</span> </h5>
       <h5 id="category"><span class="fw-bold">Category:</span> </h5>
-      <h5 id="price"><span class="fw-bold">Price:</span> </h5>
-      <h5 id="description"><span class="fw-bold">Description:</span> </h5>
+      <h5 id="price"><span class="fw-bold">Price: </span> Rp. </h5>
+      <h5 id="quota"><span class="fw-bold">Quota:</span> </h5>
+      <h5 id="desc"><span class="fw-bold">Description:</span> </h5>
     </div>
   </div>
 
@@ -31,25 +32,19 @@
         <form action="">
           <div class="modal-body">
             <div class="form-floating mb-3">
-              <input id="titleInput" type="text" class="form-control" autocomplete="off" required>
-              <label>Judul</label>
-            </div>
-            <div class="mb-3">
-              <select id="categoryInput" class="form-select" aria-label="Default select example">
-                <option selected disabled>Pilih Kategori</option>
-                <option value="Coding">Coding</option>
-                <option value="Robotics">Robotics</option>
-                <option value="App Programming">App Programming</option>
-                <option value="Engineering">Engineering</option>
-                <option value="Bootcamp">Bootcamp</option>
-              </select>
+              <input id="nameInput" type="text" class="form-control" autocomplete="off" required>
+              <label>Name</label>
             </div>
             <div class="form-floating mb-3">
-              <input id="priceInput" type="text" class="form-control" autocomplete="off" required>
+              <input id="priceInput" type="number" class="form-control" autocomplete="off" required>
               <label>Price</label>
             </div>
             <div class="form-floating mb-3">
-              <input id="descriptionInput" type="text" class="form-control" autocomplete="off" required>
+              <input id="quotaInput" type="number" class="form-control" autocomplete="off" required>
+              <label>Quota</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input id="descInput" type="text" class="form-control" autocomplete="off" required>
               <label>Description</label>
             </div>
           </div>
@@ -83,26 +78,26 @@
       return
     }
 
-    const { title, category, price, description, image } = response.data.data
+    const { name, price, desc, img, quota, category } = response.data.data
 
-    console.log(image)
-
-    $('#title').append(title)
-    $('#category').append(category)
+    $('#name').append(name)
     $('#price').append(price)
-    $('#description').append(description)
-    const source = image.split('\\')
-    $('#image').attr('src', '../../../assets/' + source[2])
+    $('#desc').append(desc)
+    $('#quota').append(quota)
+    $('#category').append(category.name)
 
-    $('#titleInput').val(title)
-    $('#categoryInput').val(category)
+    const source = img.split('\\')
+    $('#img').attr('src', '../../../assets/' + source[2])
+
+    $('#nameInput').val(name)
     $('#priceInput').val(price)
-    $('#descriptionInput').val(description)
+    $('#descInput').val(desc)
+    $('#quotaInput').val(quota)
 
     $('#deleteBtn').on('click', () => {
       swal({
         title: "Apakah anda yakin?",
-        text: `${title} akan dihapus`,
+        text: `${name} akan dihapus`,
         icon: "warning",
         buttons: true,
         dangerMode: true,
@@ -131,10 +126,10 @@
     $('#updateBtn').on('click', () => {
       $('#updateBtn').prop('disabled', true)
       axios.put(`http://localhost:3000/api/courses/${idCourse}`, {
-        title: $('#titleInput').val(),
-        category: $('#categoryInput').val(),
+        name: $('#nameInput').val(),
         price: $('#priceInput').val(),
-        description: $('#descriptionInput').val(),
+        desc: $('#descInput').val(),
+        quota: $('#quotaInput').val(),
       }).then((res) => {
         swal({
           title: "Sukses!",
