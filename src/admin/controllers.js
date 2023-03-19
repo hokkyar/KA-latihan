@@ -1,11 +1,4 @@
-// login page
-exports.loginPages = (req, res) => {
-  if (req.session.user) {
-    res.redirect('/admin/dashboard')
-  } else {
-    res.render('pages/login')
-  }
-}
+const { adminLoginService } = require('./services')
 
 // login handler
 exports.loginHandler = (req, res) => {
@@ -16,6 +9,15 @@ exports.loginHandler = (req, res) => {
     res.redirect('/admin/dashboard')
   } else {
     res.redirect('/admin/login')
+  }
+}
+
+// login page
+exports.loginPages = (req, res) => {
+  if (req.session.user) {
+    res.redirect('/admin/dashboard')
+  } else {
+    res.render('pages/login')
   }
 }
 

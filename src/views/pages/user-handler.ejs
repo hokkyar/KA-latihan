@@ -130,11 +130,12 @@
   axios.get('http://localhost:3000/api/users').then(response => {
     const { data } = response.data
     data.forEach((user, i) => {
+      console.log(user)
       const singleData = {
         "#": i + 1,
         "name": user.name,
         "email": user.email,
-        "verified": (user.verified === false) ? `<span class="text-danger">No</span>` : '<span class="text-success">Yes</span>',
+        "verified": (user.verified === 0) ? `<span class="text-danger">No</span>` : '<span class="text-success">Yes</span>',
         "action": `<a href="/admin/user-handler/show/${user.id}">Lihat Detail</a>`
       }
       users.push(singleData)

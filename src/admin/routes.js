@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const AdminController = require('../controllers/admin')
+const AdminController = require('./controllers')
 const { checkLogin } = require('../middleware/checkLogin')
 
 router.get('/login', AdminController.loginPages)

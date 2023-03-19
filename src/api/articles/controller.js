@@ -1,4 +1,4 @@
-const { Article } = require('../models/index')
+const { Article } = require('../../models/index')
 // const { nanoid } = require('nanoid')
 
 exports.getAllArticles = async (req, res) => {

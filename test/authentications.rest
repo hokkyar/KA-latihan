@@ -1,0 +1,24 @@
+### USER LOGIN
+POST http://localhost:3000/api/authentication
+Content-Type: application/json
+
+{
+  "email": "hokky@undiksha.ac.id",
+  "password": "123"
+}
+
+### UPDATE REFRESH TOKEN
+PUT http://localhost:3000/api/authentication
+Content-Type: application/json
+
+{
+  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InVzci14eGQ5cGxfVl9Nc18iLCJpYXQiOjE2NzkyNDE2NzQsImV4cCI6MTY3OTMyODA3NH0.5YXzCrR6iJVaOdc_po7QP4H1rcawTt-mOADwgehttag"
+}
+
+### USER LOGOUT
+DELETE http://localhost:3000/api/authentication
+Content-Type: application/json
+
+{
+  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InVzci14eGQ5cGxfVl9Nc18iLCJpYXQiOjE2NzkyNDE2NzQsImV4cCI6MTY3OTMyODA3NH0.5YXzCrR6iJVaOdc_po7QP4H1rcawTt-mOADwgehttag"
+}

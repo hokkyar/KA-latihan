@@ -1,0 +1,30 @@
+### GET ALL USERS
+GET http://localhost:3000/api/users
+
+### GET USER BY ID
+GET http://localhost:3000/api/users/usr-asd
+
+### REGISTER USER
+POST http://localhost:3000/api/users
+Content-Type: application/json
+
+{
+  "email": "kodasdingtest4@gmail.com",
+  "name": "kerensekali",
+  "password": "123",
+  "confirmPassword": "123"
+}
+
+### UPDATE USER
+PUT http://localhost:3000/api/users/{idUser}
+Content-Type: application/json
+
+{
+  "name": "tes"
+}
+
+### DELETE USER
+DELETE http://localhost:3000/api/users/usr-AxhQSaHYNZOP
+
+### VERIFY
+GET http://localhost:3000/api/users/verify?id=asd&token=asd
